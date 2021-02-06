@@ -11,7 +11,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 @Component({
   selector: 'app-grid-builder',
   templateUrl: './grid-builder.component.html',
-  styleUrls: ['./grid-builder.css']
 })
 export class GridBuilderComponent implements OnInit {
 
@@ -30,8 +29,8 @@ export class GridBuilderComponent implements OnInit {
       editable: false,
       sortable: true,
       flex: 1,
-      minWidth: 50,
-      maxWidth: 400,
+      minWidth: 100,
+      maxWidth: 300,
       filter: true,
       comparator: () => 0
     };
@@ -64,7 +63,7 @@ export class GridBuilderComponent implements OnInit {
     }
   }
 
-  onSortChanged(){
+  OnSortChanged(){
     const sortModel = this.gridApi.getSortModel()[0];
     if (sortModel) {
       this.filterParams.asc = sortModel.sort === 'asc';
@@ -122,9 +121,7 @@ export class GridBuilderComponent implements OnInit {
 
   getData(): void{
     if (!this.hasEmptyFilters()) {
-      this.http.get(
-          `${environment.httpDomain}${this.path}`,
-          {params: new HttpParams({fromObject: this.filterParams as any})})
+      this.http.get(`${environment.httpDomain}${this.path}`, {params: new HttpParams({fromObject: this.filterParams as any})})
         .subscribe(res => {
           this.rowData = res as any[];
           this.isLoaded.next(true);

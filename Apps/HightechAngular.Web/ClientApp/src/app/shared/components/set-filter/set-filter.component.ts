@@ -39,7 +39,7 @@ export class SetFilterComponent implements IFilterAngularComp {
     if (this.dropdownsList.length === 0) {
       return true;
     }
-    const selected = this.dropdownsList.filter(y => y.checked).map(x => x.value);
+    const selected = this.dropdownsList.filter(y => y.checked).map(x => x.label);
     return selected.includes(this.valueGetter(params.node));
   }
 
