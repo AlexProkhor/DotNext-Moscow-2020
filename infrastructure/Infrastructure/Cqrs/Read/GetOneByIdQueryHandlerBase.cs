@@ -20,9 +20,6 @@ namespace Infrastructure.Cqrs.Read
             _queryable = queryable;
         }
 
-        public TDto Handle(TQuery input)
-        {
-            return Map(_queryable, input).FirstOrDefaultById(input.Id);
-        }
+        public TDto Handle(TQuery input) => Map(_queryable, input).FirstOrDefaultById(input.Id);
     }
 }

@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Force.Ccc;
-using Infrastructure.Cqrs;
 using Infrastructure.Validation;
 using Infrastructure.Workflow;
 using Microsoft.AspNetCore.Http;
@@ -15,8 +14,8 @@ namespace Infrastructure.AspNetCore
 {
     public class ActionResultBuilder<T> : IStatusCodeActionResult
     {
-        private readonly HttpContext _httpContext;
         private readonly Result<T, FailureInfo> _result;
+        private readonly HttpContext _httpContext;
 
         private ActionResult _objectResult;
 
@@ -26,26 +25,31 @@ namespace Infrastructure.AspNetCore
             _httpContext = httpContext;
         }
 
+
+        public static implicit operator ActionResult<T>(ActionResultBuilder<T> resultBuilder) =>
+            resultBuilder.GetActionResult(resultBuilder._result);
+
         Task IActionResult.ExecuteResultAsync(ActionContext context)
         {
             var res = GetActionResult(_result);
             return res.ExecuteResultAsync(context);
         }
 
-        int? IStatusCodeActionResult.StatusCode => (GetActionResult(_result) as IStatusCodeActionResult)?.StatusCode;
+        private ActionResult GetActionResult(Result<T, FailureInfo> result) =>
+            _objectResult ??= Match(result);
 
-
-        public static implicit operator ActionResult<T>(ActionResultBuilder<T> resultBuilder)
+        protected virtual Dictionary<string, IEnumerable<string>> GetErrors(FailureInfo failureInfo)
         {
-            return resultBuilder.GetActionResult(resultBuilder._result);
+            return GetErrorsStatic(failureInfo);
         }
 
-        private ActionResult GetActionResult(Result<T, FailureInfo> result)
+        protected virtual Dictionary<string, IEnumerable<string>> ValidationFailureInfo(
+            ValidationFailureInfo failureInfo)
         {
-            return _objectResult ??= Match(result);
+            return GetValidationFailureInfo(failureInfo);
         }
 
-        private static Dictionary<string, IEnumerable<string>> GetErrors(FailureInfo failureInfo)
+        private static Dictionary<string, IEnumerable<string>> GetErrorsStatic(FailureInfo failureInfo)
         {
             return failureInfo switch
             {
@@ -85,20 +89,6 @@ namespace Infrastructure.AspNetCore
             }
 
             ((List<string>) dictionary[key]).Add(fi.ErrorMessage);
-        }
-
-        protected virtual ActionResult Match(Result<T, FailureInfo> result)
-        {
-            return result.Match(SuccessMatch, FailureMatch);
-        }
-
-
-        public static string GetErrorDetails(FailureInfo failureInfo)
-        {
-            return string.Join(",\n",
-                GetErrors(failureInfo)
-                    .Select(kv => kv.Key + ": " + kv.Value)
-                    .ToArray());
         }
 
         #region Public API for overriding the response handling
@@ -148,56 +138,46 @@ namespace Infrastructure.AspNetCore
 
         #endregion
 
+        protected virtual ActionResult Match(Result<T, FailureInfo> result)
+        {
+            return result.Match(SuccessMatch, FailureMatch);
+        }
+
         #region Default response handling (to use in Match)
 
-        public static ObjectResult SuccessMatch(T success)
-        {
-            return success switch
+        public static ObjectResult SuccessMatch(T success) =>
+            success switch
             {
                 null when typeof(T) == typeof(object) => new ObjectResult(null)
                 {
                     StatusCode = StatusCodes.Status204NoContent
                 },
                 null => new ObjectResult(null) {StatusCode = StatusCodes.Status404NotFound},
-                _ => MatchNotNull(success)
+                _ => new OkObjectResult(success)
             };
-        }
-
-        private static ObjectResult DispatchResult<TResult>(CommandResult<TResult> commandResult) =>
-            commandResult.Match(s => new OkObjectResult(s), FailureMatch);
-        
-        private static ObjectResult DispatchResult(object result) => new OkObjectResult(result);
-
-        private static ObjectResult MatchNotNull(T success) => DispatchResult((dynamic) success);
 
         public static ObjectResult FailureMatch(FailureInfo failureInfo)
         {
             var statusCode = failureInfo.Type switch
             {
                 FailureType.Invalid => (failureInfo as ValidationFailureInfo)
-                                       ?.Results.Any(y => y is NotFoundValidationResult)
-                                       == true
-                    ? StatusCodes.Status404NotFound
-                    : StatusCodes.Status422UnprocessableEntity,
+                    ?.Results.Any(y => y is NotFoundValidationResult) == true
+                        ? StatusCodes.Status404NotFound
+                        : StatusCodes.Status422UnprocessableEntity,
                 FailureType.Unauthorized => StatusCodes.Status401Unauthorized,
                 FailureType.ConfigurationError => StatusCodes.Status501NotImplemented,
                 _ => StatusCodes.Status500InternalServerError
             };
 
             if (statusCode >= 500 && statusCode <= 599)
-            {
                 return new ObjectResult(new ProblemDetails
                 {
                     Detail = GetErrorDetails(failureInfo),
                     Title = failureInfo.Message,
                     Status = statusCode
-                })
-                {
-                    StatusCode = statusCode
-                };
-            }
+                });
 
-            var descriptor = GetErrors(failureInfo)
+            var descriptor = GetErrorsStatic(failureInfo)
                 .ToDictionary(pair => pair.Key,
                     pair => pair.Value.ToArray());
 
@@ -208,5 +188,14 @@ namespace Infrastructure.AspNetCore
         }
 
         #endregion
+
+
+        public static string GetErrorDetails(FailureInfo failureInfo) =>
+            string.Join(",\n",
+                GetErrorsStatic(failureInfo)
+                    .Select(kv => kv.Key + ": " + kv.Value)
+                    .ToArray());
+
+        int? IStatusCodeActionResult.StatusCode => (GetActionResult(_result) as IStatusCodeActionResult)?.StatusCode;
     }
 }

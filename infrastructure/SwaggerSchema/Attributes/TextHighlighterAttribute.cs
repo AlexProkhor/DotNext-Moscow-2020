@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Infrastructure.SwaggerSchema.Attributes
 {
@@ -6,7 +7,6 @@ namespace Infrastructure.SwaggerSchema.Attributes
     public class TextHighlighterAttribute : Attribute
     {
         public string Value { get; set; }
-
         public string Color { get; set; }
     }
 }

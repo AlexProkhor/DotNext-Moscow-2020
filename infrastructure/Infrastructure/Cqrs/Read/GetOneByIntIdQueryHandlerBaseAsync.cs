@@ -10,6 +10,8 @@ namespace Infrastructure.Cqrs.Read
         where TQuery : IQuery<Task<TDto>>, IHasId<int>
         where TDto : class, IHasId<int>
     {
-        protected GetOneByIntIdQueryHandlerBaseAsync(IQueryable<TEntity> queryable) : base(queryable) { }
+        protected GetOneByIntIdQueryHandlerBaseAsync(IQueryable<TEntity> queryable) : base(queryable)
+        {
+        }
     }
 }

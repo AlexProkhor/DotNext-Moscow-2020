@@ -1,4 +1,5 @@
-﻿using Infrastructure.SwaggerSchema;
+﻿using HightechAngular.Shop;
+using Infrastructure.SwaggerSchema;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
@@ -10,13 +11,13 @@ namespace HightechAngular.Web
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                c.SwaggerDoc("v1", new OpenApiInfo()
                 {
                     Title = "Hightech Swagger API",
                     Version = "v1"
                 });
                 c.DocumentFilter<SchemaDocumentFilter>();
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     In = ParameterLocation.Header, Description = "JWT Token",
                     Name = "Authorization", Type = SecuritySchemeType.ApiKey

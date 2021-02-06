@@ -10,6 +10,8 @@ namespace Infrastructure.Cqrs.Read
         where TQuery : IQuery<TDto>, IHasId<Guid>
         where TDto : class, IHasId<Guid>
     {
-        protected GetOneByGuidIdQueryHandlerBase(IQueryable<TEntity> queryable) : base(queryable) { }
+        protected GetOneByGuidIdQueryHandlerBase(IQueryable<TEntity> queryable) : base(queryable)
+        {
+        }
     }
 }

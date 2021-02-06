@@ -7,7 +7,9 @@ namespace Infrastructure.OperationContext
         where TRequest : class, IHasId<TKey>
         where TKey : IEquatable<TKey>
     {
-        protected ByIdOperationContextBase(TRequest request) : base(request) { }
+        protected ByIdOperationContextBase(TRequest request) : base(request)
+        {
+        }
 
         object IHasId.Id => Id;
 

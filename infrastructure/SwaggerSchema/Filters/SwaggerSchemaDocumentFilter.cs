@@ -47,15 +47,19 @@ namespace Infrastructure.SwaggerSchema.Filters
                 }
 
                 foreach (var property in properties)
-                foreach (var abstractCustomAttributeHandler in _abstractCustomAttributeHandlers)
                 {
-                    abstractCustomAttributeHandler.FillProperties(property);
+                    foreach (var abstractCustomAttributeHandler in _abstractCustomAttributeHandlers)
+                    {
+                        abstractCustomAttributeHandler.FillProperties(property);
+                    }
                 }
 
                 foreach (var schemaProperty in schema.Value.Properties)
-                foreach (var abstractCustomAttributeHandler in _abstractCustomAttributeHandlers)
                 {
-                    abstractCustomAttributeHandler.HandleSchemaProperty(schemaProperty);
+                    foreach (var abstractCustomAttributeHandler in _abstractCustomAttributeHandlers)
+                    {
+                        abstractCustomAttributeHandler.HandleSchemaProperty(schemaProperty);
+                    }
                 }
             }
         }

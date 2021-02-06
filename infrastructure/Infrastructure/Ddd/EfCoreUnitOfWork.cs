@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using Force.Ccc;
 using Force.Cqrs;
 using Force.Ddd.DomainEvents;
@@ -8,13 +9,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Ddd
 {
-    public class EfCoreUnitOfWork : UnitOfWorkBase
+    public class EfCoreUnitOfWork: UnitOfWorkBase
     {
         private readonly DbContext _dbContext;
 
         public EfCoreUnitOfWork(
-            IHandler<IEnumerable<IDomainEvent>> domainEventDispatcher,
-            DbContext dbContext) :
+            IHandler<IEnumerable<IDomainEvent>> domainEventDispatcher, 
+            DbContext dbContext): 
             base(domainEventDispatcher)
         {
             _dbContext = dbContext;
@@ -35,9 +36,19 @@ namespace Infrastructure.Ddd
             _dbContext.Remove(entity);
         }
 
-        public override TEntity Find<TEntity>(params object[] id)
+        public override void Rollback()
         {
-            return (TEntity) _dbContext.Find(typeof(TEntity), id);
+            throw new System.NotImplementedException();
+        }
+
+        public override TEntity Find<TEntity>(params object[] id) 
+        {
+            return (TEntity)_dbContext.Find(typeof(TEntity), id);
+        }
+
+        public override Transaction BeginTransaction()
+        {
+            throw new NotImplementedException();
         }
 
         protected override void DoCommit()
@@ -45,17 +56,10 @@ namespace Infrastructure.Ddd
             _dbContext.SaveChanges();
         }
 
-        protected override IEnumerable<IDomainEvent> GetDomainEvents()
-        {
-            return _dbContext.ChangeTracker
+        protected override IEnumerable<IDomainEvent> GetDomainEvents() =>
+            _dbContext.ChangeTracker
                 .Entries<IHasDomainEvents>()
                 .SelectMany(x => x.Entity.GetDomainEvents());
-        }
-
-        public override IUnitOfWorkTransaction BeginTransaction()
-        {
-            return new EfCoreUnitOfWorkTransaction(_dbContext.Database.BeginTransaction());
-        }
 
         public override void Update<TEntity>(TEntity entity)
         {

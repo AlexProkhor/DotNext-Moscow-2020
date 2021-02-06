@@ -10,6 +10,8 @@ namespace Infrastructure.Cqrs.Read
         where TDto : class, IHasId<string>
         where TEntity : IHasId<string>
     {
-        protected GetOneByStringIdQueryHandlerBase(IQueryable<TEntity> queryable) : base(queryable) { }
+        protected GetOneByStringIdQueryHandlerBase(IQueryable<TEntity> queryable) : base(queryable)
+        {
+        }
     }
 }

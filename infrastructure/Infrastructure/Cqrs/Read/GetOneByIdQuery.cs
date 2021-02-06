@@ -2,5 +2,7 @@
 
 namespace Infrastructure.Cqrs.Read
 {
-    public class GetOneByIdQuery<T> : IQuery<T> { }
+    public class GetOneByIdQuery<T>: IQuery<T>
+    {
+    }
 }

@@ -10,6 +10,8 @@ namespace Infrastructure.Cqrs.Read
         where TQuery : class, IQuery<IEnumerable<TListItem>>
         where TListItem : IHasId<int>
     {
-        protected GetIntEnumerableQueryHandlerBase(IQueryable<TEntity> queryable) : base(queryable) { }
+        protected GetIntEnumerableQueryHandlerBase(IQueryable<TEntity> queryable) : base(queryable)
+        {
+        }
     }
 }

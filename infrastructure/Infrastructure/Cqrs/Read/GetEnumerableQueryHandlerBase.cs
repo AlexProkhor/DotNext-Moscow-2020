@@ -15,20 +15,17 @@ namespace Infrastructure.Cqrs.Read
         where TListItem : IHasId<TKey>
         where TKey : IEquatable<TKey>
     {
-        protected GetEnumerableQueryHandlerBase(IQueryable<TEntity> queryable) : base(queryable) { }
-
-        public IEnumerable<TListItem> Handle(TQuery input)
+        protected GetEnumerableQueryHandlerBase(IQueryable<TEntity> queryable) : base(queryable)
         {
-            return MapFilterAndSort(input).PipeTo(p => Fetch(p, input));
         }
 
-        protected virtual IEnumerable<TListItem> Fetch(IOrderedQueryable<TListItem> sorted, TQuery query)
-        {
-            return query switch
+        public IEnumerable<TListItem> Handle(TQuery input) => MapFilterAndSort(input).PipeTo(p => Fetch(p, input));
+
+        protected virtual IEnumerable<TListItem> Fetch(IOrderedQueryable<TListItem> sorted, TQuery query) =>
+            query switch
             {
                 IPaging paging => sorted.ToPagedEnumerable(paging),
                 _ => sorted.ToList()
             };
-        }
     }
 }

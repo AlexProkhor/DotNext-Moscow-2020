@@ -4,9 +4,13 @@ using Force.Ddd.DomainEvents;
 
 namespace Infrastructure.Cqrs
 {
-    public interface IDomainEventHandler<T> : IHandler<T>
-        where T : IDomainEvent { }
-
-    public interface IGroupDomainEventHandler<T> : IHandler<T>
-        where T : IEnumerable<IDomainEvent> { }
+    public interface IDomainEventHandler<T>: IHandler<T>
+        where T: IDomainEvent
+    {
+    }
+    
+    public interface IGroupDomainEventHandler<T>: IHandler<T>
+        where T: IEnumerable<IDomainEvent>
+    {
+    }
 }

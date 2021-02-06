@@ -1,11 +1,16 @@
+using System.Text.Json.Serialization;
 using HightechAngular.Admin;
+using HightechAngular.Admin.Features.OrderManagement;
 using HightechAngular.Data;
 using HightechAngular.Identity.Entities;
 using HightechAngular.Identity.Services;
 using HightechAngular.Orders;
 using HightechAngular.Shop;
+using HightechAngular.Shop.Features.Catalog;
 using HightechAngular.Web.Filters;
+using Infrastructure;
 using Infrastructure.Extensions;
+//using Infrastructure.Extensions;
 using Infrastructure.SwaggerSchema.Dropdowns.Providers;
 using Infrastructure.SwaggerSchema.TypeProvider;
 using Microsoft.AspNetCore.Authentication;
@@ -18,18 +23,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json.Converters;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace HightechAngular.Web
 {
     public class Startup
     {
-        private readonly IWebHostEnvironment _env;
-
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            _env = env;
             Configuration = configuration;
         }
 
@@ -57,23 +58,19 @@ namespace HightechAngular.Web
             services.AddAsyncInitializer<ApplicationDbContextInitializer>();
         }
 
-        private void ConfigureWeb(IServiceCollection services)
+        private static void ConfigureWeb(IServiceCollection services)
         {
             services.AddRazorPages();
             services
-                .AddOpenGenericTypeDefinition(typeof(IDropdownProvider<>))
-                .AddControllersWithViews(options =>
-                {
-                    if (!_env.IsDevelopment())
-                    {
-                        options.Filters.Add(typeof(ExceptionsFilterAttribute));
-                    }
-                })
-                .AddNewtonsoftJson(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()))
+                .AddControllersWithViews(options => options.Filters.Add(typeof(ExceptionsFilterAttribute)))
+                .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); })
                 .AddModulesWithDbContext<ApplicationDbContext>(
-                    CoreRegistrations.RegisterCore,
-                    ShopRegistrations.RegisterShop,
-                    AdminRegistrations.RegisterAdmin);
+                    typeof(CatalogController).Assembly,
+                    typeof(OrderController).Assembly);
+
+            services.RegisterShop();
+            services.RegisterAdmin();
+            services.RegisterOrder();
 
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
             services.RegisterSwagger();
@@ -100,7 +97,7 @@ namespace HightechAngular.Web
             services
                 .AddAuthentication()
                 .AddIdentityServerJwt();
-
+            
             services.AddScoped<IUserContext, UserContext>();
         }
 
@@ -109,6 +106,7 @@ namespace HightechAngular.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -124,7 +122,7 @@ namespace HightechAngular.Web
             }
 
             app.UseRouting();
-
+            
             var fordwardedHeaderOptions = new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
@@ -138,21 +136,21 @@ namespace HightechAngular.Web
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseIdentityServer();
-
+            
             app.UseSession();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    "default",
-                    "{controller}/{action=Index}/{id?}");
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "API");
+                options.SwaggerEndpoint($"/swagger/v1/swagger.json", "API");
                 options.DocExpansion(DocExpansion.None);
             });
 
@@ -162,7 +160,7 @@ namespace HightechAngular.Web
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseAngularCliServer("start");
+                    spa.UseAngularCliServer(npmScript: "start");
                 }
             });
         }
