@@ -3,8 +3,8 @@ using HightechAngular.Orders.Entities;
 
 namespace HightechAngular.Admin.Features.OrderManagement
 {
-    public class ShipOrder: ChangeOrderStateBase
+    public class ShipOrder : ChangeOrderStateBase
     {
-        public int   OrderId { get; set; }
+        public int OrderId { get; set; }
     }
 }

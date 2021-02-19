@@ -4,17 +4,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Force.Ddd;
 using Force.Ddd.DomainEvents;
+using Force.Extensions;
 using HightechAngular.Identity.Entities;
+using Infrastructure.Ddd;
 using Infrastructure.Ddd.Domain.State;
 
 namespace HightechAngular.Orders.Entities
 {
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-    public class Order : HasIdBase
+    public class Order : IntEntityBase
     {
         public static readonly OrderSpecs Specs = new OrderSpecs();
 
-        public Order()
+        protected Order()
         {
         }
 
@@ -24,17 +26,12 @@ namespace HightechAngular.Orders.Entities
             
             _orderItems = cart
                 .CartItems
-                .Select(x => new OrderItem(this, x)
-                {
-                    Order = this,
-                    Count = x.Count,
-                    Name = x.ProductName,
-                    Price = x.Price
-                })
+                .Select(x => new OrderItem(this, x))
                 .ToList();
 
             Total = _orderItems.Select(x => x.Price).Sum();
             Status = OrderStatus.New;
+            this.EnsureInvariant();
         }
         public OrderStatus BecomePaid()
         {
@@ -60,20 +57,20 @@ namespace HightechAngular.Orders.Entities
         }
 
         [Required]
-        public virtual User User { get; set; }
+        public virtual User User { get; protected set; }
 
-        public DateTime Created { get; set; } = DateTime.UtcNow;
+        public DateTime Created { get; protected set; } = DateTime.UtcNow;
         
-        public DateTime Updated { get; set; }
+        public DateTime Updated { get; protected set; }
         
         private List<OrderItem> _orderItems = new List<OrderItem>();
        // public IEnumerable<OrderItem> OrderItems => _orderItems;
        public virtual IEnumerable<OrderItem> OrderItems => _orderItems;
         
-        public double Total { get; set; }
+        public double Total { get; protected set; }
         
-        public Guid? TrackingCode { get; set; }
+        public Guid? TrackingCode { get; protected set; }
         
-        public OrderStatus Status { get; set; }
+        public OrderStatus Status { get; protected set; }
     }
 }
