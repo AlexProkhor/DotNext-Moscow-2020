@@ -28,9 +28,9 @@ namespace HightechAngular.Orders.Entities
             _cartItems = new List<CartItem>(cartItems);
         }
 
-        public User User { get; }
+        public User User { get; } = default!;
 
-        private readonly List<CartItem> _cartItems;
+        private readonly List<CartItem> _cartItems = default!;
 
         public IEnumerable<CartItem> CartItems => _cartItems;
 

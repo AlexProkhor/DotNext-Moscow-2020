@@ -23,11 +23,11 @@ namespace HightechAngular.Orders.Entities
             ProductId = cartItem.ProductId;
             this.EnsureInvariant();
         }
-        
+
         [Required]
-        public string Name { get; protected set; }
-        
-        public virtual Order Order { get; protected set; }
+        public string Name { get; protected set; } = default!;
+
+        public virtual Order Order { get; protected set; } = default!;
         
         public double Price { get; protected set; }
         

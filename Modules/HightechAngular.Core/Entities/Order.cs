@@ -57,7 +57,7 @@ namespace HightechAngular.Orders.Entities
         }
 
         [Required]
-        public virtual User User { get; protected set; }
+        public virtual User User { get; protected set; } = default!;
 
         public DateTime Created { get; protected set; } = DateTime.UtcNow;
         

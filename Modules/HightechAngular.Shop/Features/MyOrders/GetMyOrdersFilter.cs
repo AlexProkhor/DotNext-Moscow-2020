@@ -16,7 +16,13 @@ namespace HightechAngular.Shop.Features.MyOrders
             _userContext = userContext;
         }
 
-        public IQueryable<Order> Filter(IQueryable<Order> queryable, GetMyOrders predicate) =>
-            queryable.Where(Order.Specs.ByUserName(_userContext.User?.UserName));
+        public IQueryable<Order> Filter(IQueryable<Order> queryable, GetMyOrders predicate)
+        {
+            var userName = _userContext.User?.UserName;
+            queryable = userName == null 
+                ? queryable.Where(x => false) 
+                : queryable.Where(Order.Specs.ByUserName(userName));
+            return queryable;
+        }
     }
 }

@@ -6,7 +6,7 @@ using Infrastructure.Cqrs;
 
 namespace HightechAngular.Shop.Features.MyOrders
 {
-    public class DisputeOrderCommandHandler: ICommandHandler<DisputeOrder, Task<HandlerResult<OrderStatus>>>
+    public class DisputeOrderCommandHandler : ICommandHandler<DisputeOrderContext, Task<HandlerResult<OrderStatus>>>
     {
         private readonly IQueryable<Order> _orders;
 
@@ -15,9 +15,9 @@ namespace HightechAngular.Shop.Features.MyOrders
             _orders = orders;
         }
 
-        public async Task<HandlerResult<OrderStatus>> Handle(DisputeOrder input)
+        public async Task<HandlerResult<OrderStatus>> Handle(DisputeOrderContext input)
         {
-            var order = _orders.First(x => x.Id == input.OrderId);
+            var order = _orders.First(x => x.Id == input.Order.Id);
             await Task.Delay(1000);
             var result = order.BecomeDispute();
             return new HandlerResult<OrderStatus>(result);
