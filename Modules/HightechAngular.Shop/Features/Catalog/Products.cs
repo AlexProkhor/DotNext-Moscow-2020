@@ -5,8 +5,8 @@ namespace HightechAngular.Shop.Features.Catalog
 {
     public class GetProducts: FilterQuery<ProductListItem>
     {
-        public string[] Name { get; set; }
-        public double[] Price { get; set; }
+        public string[] Name { get; set; } = default!;
+        public double[] Price { get; set; } = default!;
         public int CategoryId { get; set; }
         public GetProducts()
         {

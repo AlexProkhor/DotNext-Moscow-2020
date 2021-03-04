@@ -6,8 +6,14 @@ using Infrastructure.Ddd;
 
 namespace HightechAngular.Orders.Entities
 {
-    public class Cart: EntityBase<Guid>
+    public class Cart : EntityBase<Guid>
     {
+
+        protected Cart()
+        {
+
+        }
+
         public Cart(User user)
         {
             User = user;
@@ -22,55 +28,53 @@ namespace HightechAngular.Orders.Entities
             _cartItems = new List<CartItem>(cartItems);
         }
 
-        public User User { get; }
+        public User User { get; } = default!;
 
-        private readonly List<CartItem> _cartItems;
+        private readonly List<CartItem> _cartItems = default!;
 
         public IEnumerable<CartItem> CartItems => _cartItems;
 
 
         public bool TryRemoveProduct(int productId)
         {
-            var ci = _cartItems
+            var cartItem = _cartItems
                 .FirstOrDefault(x => x.ProductId == productId);
-            if (ci == null)
+            if (cartItem == null)
             {
                 return false;
             }
-            
-            if (ci.Count > 1)
+
+            if (cartItem.Count > 1)
             {
-                ci.Count--;
+                cartItem.DecrementCount();
             }
             else
             {
-                _cartItems.Remove(ci);
+                _cartItems.Remove(cartItem);
             }
 
             return true;
         }
-        
+
         public void AddProduct(Product product)
         {
-            var ci = _cartItems
+            var cartItem = _cartItems
                 .FirstOrDefault(x => x.ProductId == product.Id);
 
-            if (ci == null)
+            if (cartItem == null)
             {
-                ci = new CartItem
-                {
-                    ProductId = product.Id,
-                    Price = product.GetDiscountedPrice(),
-                    ProductName = product.Name,
-                    CategoryName = product.Category.Name,
-                    Count = 1
-                };
-                
-                _cartItems.Add(ci);
+                cartItem = new CartItem(
+                    product.Id,
+                    product.Name,
+                    product.Category.Name,
+                    product.GetDiscountedPrice()
+                );
+
+                _cartItems.Add(cartItem);
             }
             else
             {
-                ci.Count++;
+                cartItem.IncrementCount();
             }
         }
 

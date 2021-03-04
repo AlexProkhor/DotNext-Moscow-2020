@@ -7,7 +7,7 @@ namespace HightechAngular.Identity.Services
 {
     public class UserContext : IUserContext
     {
-        private User _user;
+        private User _user = default!;
         
         private IHttpContextAccessor HttpContextAccessor { get; }
         

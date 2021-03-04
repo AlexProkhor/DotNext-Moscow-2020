@@ -13,9 +13,7 @@ namespace Infrastructure.Ddd
 
         public override bool Equals(object obj)
         {
-            var other = obj as EntityBase<T>;
-
-            if (other is null)
+          if(obj is not EntityBase<T> other)
                 return false;
 
             if (ReferenceEquals(this, other))

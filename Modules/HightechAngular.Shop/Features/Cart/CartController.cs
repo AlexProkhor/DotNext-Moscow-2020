@@ -17,13 +17,15 @@ namespace HightechAngular.Shop.Features.Cart
 
         [HttpPut("Add")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public IActionResult Add([FromBody] int productId,
-            [FromServices] Func<UpdateCart, UpdateCartContext> factory) =>
-            this.Process(factory(new UpdateCart(productId)));
-        
+        public IActionResult Add(
+             [FromServices] Func<AddProductCart, AddProductCartContext> factory,
+            [FromBody] int productId) =>
+            this.Process(factory(new AddProductCart() { Id = productId }));
+
         [HttpPut("Remove")]
-        public ActionResult<bool> Remove([FromBody] int productId,
-            [FromServices] Func<RemoveCartItem, RemoveCartItemContext> factory) =>
-            this.Process(factory(new RemoveCartItem(productId)));
+        public ActionResult<bool> Remove(
+            [FromServices] Func<RemoveCartItem, RemoveCartItemContext> factory,
+            [FromBody] int productId) =>
+            this.Process(factory(new RemoveCartItem() { Id = productId }));
     }
 }

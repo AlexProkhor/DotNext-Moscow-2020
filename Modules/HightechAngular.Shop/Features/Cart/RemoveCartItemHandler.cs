@@ -16,7 +16,6 @@ namespace HightechAngular.Shop.Features.Cart
         {
             _cartStorage = cartStorage;
         }
-
         public bool Handle(RemoveCartItemContext input)
         {
             var res = _cartStorage.Cart.TryRemoveProduct(input.Product.Id);
