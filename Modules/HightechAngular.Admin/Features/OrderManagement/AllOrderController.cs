@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using HightechAngular.Orders.Base;
 using HightechAngular.Shop.Features.Cart;
 using HightechAngular.Shop.Features.MyOrders;
 using Infrastructure.AspNetCore;
@@ -30,14 +31,14 @@ namespace HightechAngular.Admin.Features.OrderManagement
 
         [HttpPut("Shipped")]
         public async Task<IActionResult> Shipped(
-            [FromServices] Func<CompleteOrderAdmin, CompleteOrderAdminContext> factory,
+            [FromServices] Func<ChangeOrderStateBase, CompleteOrderAdminContext> factory,
             [FromBody] ShipOrder command) =>
             await this.ProcessAsync(command);
 
         [HttpPut("Complete")]
         public async Task<IActionResult> Complete(
-            [FromServices] Func<CompleteOrderAdmin, CompleteOrderAdminContext> factory,
-            [FromBody] CompleteOrderAdmin command) =>
+            [FromServices] Func<ChangeOrderStateBase, CompleteOrderAdminContext> factory,
+            [FromBody] ChangeOrderStateBase command) =>
             await this.ProcessAsync(command);
     }
 }

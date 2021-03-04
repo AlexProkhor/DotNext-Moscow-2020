@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HightechAngular.Orders.Base;
 using Infrastructure.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,8 +33,8 @@ namespace HightechAngular.Shop.Features.MyOrders
 
         [HttpPut("PayOrder")]
         public async Task<IActionResult> PayOrder(
-            [FromServices] Func<PayMyOrder, PayMyOrderContext> factory,
-            [FromBody] PayMyOrder command) =>
+            [FromServices] Func<ChangeOrderStateBase, PayMyOrderContext> factory,
+            [FromBody] ChangeOrderStateBase command) =>
             await this.ProcessAsync(command);
     }
 }

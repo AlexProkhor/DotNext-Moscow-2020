@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Force.Ccc;
 using Force.Ddd;
 using Force.Ddd.DomainEvents;
 using Force.Extensions;
@@ -12,7 +13,7 @@ using Infrastructure.Ddd.Domain.State;
 namespace HightechAngular.Orders.Entities
 {
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-    public class Order : IntEntityBase
+    public partial class Order : IntEntityBase
     {
         public static readonly OrderSpecs Specs = new OrderSpecs();
 
@@ -33,11 +34,7 @@ namespace HightechAngular.Orders.Entities
             Status = OrderStatus.New;
             this.EnsureInvariant();
         }
-        public OrderStatus BecomePaid()
-        {
-            Status = OrderStatus.Paid;
-            return Status;
-        }
+       
         public OrderStatus BecomeShipped()
         {
             Status = OrderStatus.Shipped;

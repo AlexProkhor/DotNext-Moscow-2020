@@ -55,11 +55,5 @@
       <Compile Update="Features\OrderManagement\ShipOrderCommandHandler.cs">
         <DependentUpon>ShipOrder.cs</DependentUpon>
       </Compile>
-      <Compile Update="Features\OrderManagement\CompleteOrderAdmin.cs">
-        <DependentUpon>AllOrderController.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Features\OrderManagement\CompleteOrderAdminCommandHandler.cs">
-        <DependentUpon>CompleteOrderAdmin.cs</DependentUpon>
-      </Compile>
     </ItemGroup>
 </Project>
