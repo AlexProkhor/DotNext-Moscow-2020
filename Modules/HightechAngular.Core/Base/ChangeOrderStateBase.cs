@@ -10,6 +10,5 @@ namespace HightechAngular.Orders.Base
         HasIdBase,
         ICommand<Task<HandlerResult<OrderStatus>>>
     {
-        public int OrderId { get; set; }
     }
 }

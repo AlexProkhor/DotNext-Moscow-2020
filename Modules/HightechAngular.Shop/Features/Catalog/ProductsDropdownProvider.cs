@@ -12,7 +12,7 @@ namespace HightechAngular.Shop.Features.Catalog
     public class ProductsDropdownProvider : IDropdownProvider<ProductListItem>
     {
         private readonly IServiceProvider _serviceProvider;
-        private static IHttpContextAccessor? _httpContextAccessor;
+        private static IHttpContextAccessor _httpContextAccessor;
         private readonly int _currentCategoryId;
 
         public ProductsDropdownProvider(IServiceProvider serviceProvider, 

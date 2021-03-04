@@ -5,7 +5,7 @@ using Infrastructure.OperationContext;
 
 namespace HightechAngular.Shop.Features.Cart
 {
-    public class RemoveCartItemContext : ByIntIdOperationContextBase<RemoveCartItem>, ICommand<bool>
+    public class RemoveCartItemContext : OperationContextBase<RemoveCartItem>, ICommand<bool>
     {
         [Required]
         public Product Product { get; }

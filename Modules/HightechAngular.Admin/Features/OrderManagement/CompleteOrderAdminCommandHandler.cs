@@ -4,23 +4,23 @@ using Force.Cqrs;
 using HightechAngular.Orders.Entities;
 using Infrastructure.Cqrs;
 
-namespace HightechAngular.Shop.Features.MyOrders
+namespace HightechAngular.Admin.Features.OrderManagement
 {
-    public class CompleteOrderCommandHandler : ICommandHandler<CompleteOrder, Task<HandlerResult<OrderStatus>>>
+    public class CompleteOrderAdminCommandHandler: ICommandHandler<CompleteOrderAdmin, Task<HandlerResult<OrderStatus>>>
     {
         private readonly IQueryable<Order> _orders;
 
-        public CompleteOrderCommandHandler(IQueryable<Order> orders)
+        public CompleteOrderAdminCommandHandler(IQueryable<Order> orders)
         {
             _orders = orders;
         }
 
-        public async Task<HandlerResult<OrderStatus>> Handle(CompleteOrder input)
+        public async Task<HandlerResult<OrderStatus>> Handle(CompleteOrderAdmin input)
         {
             var order = _orders.First(x => x.Id == input.OrderId);
             await Task.Delay(1000);
             var result = order.BecomeComplete();
-            return new HandlerResult<OrderStatus>(result);
+            return new HandlerResult<OrderStatus>(result);;
         }
     }
 }

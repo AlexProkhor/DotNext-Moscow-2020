@@ -4,11 +4,14 @@ using Force.Ddd;
 
 namespace HightechAngular.Shop.Features.Cart
 {
-    public class RemoveCartItem : IHasId<int>, ICommand<bool>
+    public class RemoveCartItem : HasIdBase, ICommand<bool>
     {
+        [Range(1, int.MaxValue)]
+        public int ProductId { get; }
 
-        public int Id { get; set; }
-
-        object? IHasId.Id { get; } = default;
+        public RemoveCartItem(int productId)
+        {
+            ProductId = productId;
+        }
     }
 }

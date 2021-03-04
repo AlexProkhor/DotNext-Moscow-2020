@@ -5,47 +5,26 @@ using Microsoft.AspNetCore.Mvc;
 namespace HightechAngular.Orders.Entities
 {
     // JSON Serialization prevents encapsulation :(
-    public class CartItem
+    public class CartItem : HasIdBase
     {
-        public CartItem(
-            int productId,
-            string productName,
-            string categoryName,
-            double price,
-            int count = 1)
-        {
-            ProductId = productId;
-            ProductName = productName;
-            CategoryName = categoryName;
-            Price = price;
-            Count = count;
-        }
+        [HiddenInput]
+        public override int Id { get; set; }
         
         [Display(Name = "Product Id")]
-        public int ProductId { get; protected set; }
+        public int ProductId { get; set; }
 
         [Display(Name = "Name")]
-        public string ProductName { get; protected set; }
+        public string ProductName { get; set; }
         
         [Display(Name = "Category")]
-        public string CategoryName { get; protected set; }
+        public string CategoryName { get; set; }
 
         [Display(Name = "Price")]
-        public double Price { get; protected set; }
+        public double Price { get; set; }
         
         [Display(Name = "Count")]
-        public int Count { get; protected set; }
+        public int Count { get; set; }
         
-        public void DecrementCount(int count = 1)
-        {
-            Count -= count;
-        }
-
-        public void IncrementCount(int count = 1)
-        {
-            Count += count;
-        }
-
         public override string ToString() => $"{ProductName}: ${Price}";
     }
 }

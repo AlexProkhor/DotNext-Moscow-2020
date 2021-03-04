@@ -19,18 +19,18 @@ namespace HightechAngular.Admin.Features.OrderManagement
         };
 
         [Display(Name = "Id")]
-        public override int Id { get; set; } = default!;
+        public override int Id { get; set; }
 
         [Display(Name = "Total")]
-        public double Total { get; set; } = default!;
-
+        public double Total { get; set; }
+        
         [Display(Name = "Status")]
-        public string Status { get; set; } = default!;
-
+        public string Status { get; set; }
+        
         [Display(Name = "Created")]
-        public string Created { get; set; } = default!;
-
+        public string Created { get; set; }
+        
         [HiddenInput]
-        public string UserId { get; set; } = default!;
+        public string UserId { get; set; }
     }
 }

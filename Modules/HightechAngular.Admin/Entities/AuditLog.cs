@@ -21,10 +21,10 @@ namespace HightechAngular.Admin.Entities
         }
 
         [Required]
-        public string EventName { get; protected set; } = default!;
-
+        public string EventName { get; protected set; }
+        
         [Required]
-        public string UserName { get; protected set; } = default!;
+        public string UserName { get; protected set; }
         
         public int? EntityId { get; protected set; }
 

@@ -11,10 +11,18 @@ namespace HightechAngular.Orders.Entities
 {
     public class Product : IntEntityBase
     {
+        public static readonly Expression<Func<Product, double>> DiscountedPriceExpression =
+            x => x.Price - x.Price / 100 * x.DiscountPercent;
+
+        public static Expression<Func<Product, Product>> UpdatePurchaseCountExpression(int count) =>
+            product => new Product()
+            {
+                PurchaseCount = product.PurchaseCount + count
+            };
 
         public static readonly ProductSpecs Specs = new ProductSpecs();
 
-        protected Product()
+        public Product()
         {
         }
 
@@ -25,19 +33,19 @@ namespace HightechAngular.Orders.Entities
             Name = name;
             Price = price;
             DiscountPercent = discountPercent;
+            DateCreated = DateTime.UtcNow;
             this.EnsureInvariant();
         }
 
-        [Required] public string Name { get; protected set; } = default!;
+        [Required] public string Name { get; set; }
 
-        public double Price { get; protected set; }
+        public double Price { get; set; }
 
-        public int DiscountPercent { get; protected set; }
+        public int DiscountPercent { get; set; }
 
-        public DateTime DateCreated { get; 
-            protected set; } =  DateTime.UtcNow;
+        public DateTime DateCreated { get; set; }
 
-        public virtual Category Category { get; protected set; } = default!;
+        public virtual Category Category { get; set; }
 
         public int PurchaseCount { get; set; }
 
@@ -45,14 +53,5 @@ namespace HightechAngular.Orders.Entities
         {
             return DiscountedPriceExpression.AsFunc()(this);
         }
-
-        public static readonly Expression<Func<Product, double>> DiscountedPriceExpression =
-           x => x.Price - x.Price / 100 * x.DiscountPercent;
-
-        public static Expression<Func<Product, Product>> UpdatePurchaseCountExpression(int count) =>
-            product => new Product()
-            {
-                PurchaseCount = product.PurchaseCount + count
-            };
     }
 }
