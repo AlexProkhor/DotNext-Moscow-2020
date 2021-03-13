@@ -1,18 +1,16 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
-using Force.Expressions;
+﻿using Force.Expressions;
 using Force.Extensions;
 using Infrastructure.Ddd;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Mvc;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
 
 namespace HightechAngular.Orders.Entities
 {
     public class Product : IntEntityBase
     {
 
-        public static readonly ProductSpecs Specs = new ProductSpecs();
+        public static readonly ProductSpecs Specs = ProductSpecs.Instance;
 
         protected Product()
         {
@@ -28,14 +26,18 @@ namespace HightechAngular.Orders.Entities
             this.EnsureInvariant();
         }
 
-        [Required] public string Name { get; protected set; } = default!;
+        [Required]
+        public string Name { get; protected set; } = default!;
 
         public double Price { get; protected set; }
 
         public int DiscountPercent { get; protected set; }
 
-        public DateTime DateCreated { get; 
-            protected set; } =  DateTime.UtcNow;
+        public DateTime DateCreated
+        {
+            get;
+            protected set;
+        } = DateTime.UtcNow;
 
         public virtual Category Category { get; protected set; } = default!;
 

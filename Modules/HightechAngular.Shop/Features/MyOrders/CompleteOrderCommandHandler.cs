@@ -17,10 +17,10 @@ namespace HightechAngular.Shop.Features.MyOrders
 
         public async Task<HandlerResult<OrderStatus>> Handle(CompleteOrderContext input)
         {
-            var order = _orders.First(x => x.Id == input.Order.Id);
             await Task.Delay(1000);
-            var result = order.BecomeComplete();
-            return new HandlerResult<OrderStatus>(result);
+            var result = new Order.Shipped(input.Order).BecomeComplete();
+            return new HandlerResult<OrderStatus>(result.EligibleStatus);
+
         }
     }
 }

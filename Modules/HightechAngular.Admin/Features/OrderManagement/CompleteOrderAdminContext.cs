@@ -1,24 +1,12 @@
-﻿using Force.Cqrs;
-using HightechAngular.Orders.Base;
-using HightechAngular.Orders.Entities;
-using Infrastructure.Cqrs;
-using Infrastructure.OperationContext;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+﻿using HightechAngular.Orders.Entities;
+using HightechAngular.Shop.Features.MyOrders;
 
 namespace HightechAngular.Admin.Features.OrderManagement
 {
-    public class CompleteOrderAdminContext :
-        ByIntIdOperationContextBase<ChangeOrderStateBase>,
-        ICommand<Task<HandlerResult<OrderStatus>>>
-
+    public class CompleteOrderAdminContext : OrderStatusContextBase<CompleteOrder>
     {
-        [Required]
-        public Order Order { get; }
-
-        public CompleteOrderAdminContext(ChangeOrderStateBase request, Order order) : base(request)
+        public CompleteOrderAdminContext(CompleteOrder request, Order order) : base(request, order)
         {
-            Order = order;
         }
     }
 }
