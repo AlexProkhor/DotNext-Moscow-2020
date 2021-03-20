@@ -1,12 +1,9 @@
-using System;
-using System.Threading.Tasks;
-using HightechAngular.Orders.Base;
-using HightechAngular.Shop.Features.Cart;
 using HightechAngular.Shop.Features.MyOrders;
 using Infrastructure.AspNetCore;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace HightechAngular.Admin.Features.OrderManagement
 {
@@ -20,7 +17,7 @@ namespace HightechAngular.Admin.Features.OrderManagement
         [HttpPut("PayOrder")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> PayOrder(
-            [FromServices] Func<PayOrder, PayOrderContext> factory,
+            [FromServices] Func<PayOrder, PayMyOrderContext> factory,
             [FromBody] PayOrder command) =>
             await this.ProcessAsync(factory(command));
 
@@ -31,14 +28,14 @@ namespace HightechAngular.Admin.Features.OrderManagement
 
         [HttpPut("Shipped")]
         public async Task<IActionResult> Shipped(
-            [FromServices] Func<ChangeOrderStateBase, CompleteOrderAdminContext> factory,
+            [FromServices] Func<ShipOrder, CompleteOrderAdminContext> factory,
             [FromBody] ShipOrder command) =>
-            await this.ProcessAsync(command);
+            await this.ProcessAsync(factory(command));
 
         [HttpPut("Complete")]
         public async Task<IActionResult> Complete(
-            [FromServices] Func<ChangeOrderStateBase, CompleteOrderAdminContext> factory,
-            [FromBody] ChangeOrderStateBase command) =>
-            await this.ProcessAsync(command);
+            [FromServices] Func<CompleteOrderAdmin, CompleteOrderAdminContext> factory,
+            [FromBody] CompleteOrderAdmin command) =>
+            await this.ProcessAsync(factory(command));
     }
 }

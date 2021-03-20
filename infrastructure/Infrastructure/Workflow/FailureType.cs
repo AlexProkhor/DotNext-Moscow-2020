@@ -6,6 +6,7 @@
         Invalid,
         ConfigurationError,
         Other,
-        NotImplemented
+        NotImplemented,
+        Exception
     }
 }

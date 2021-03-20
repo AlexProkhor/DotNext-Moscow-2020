@@ -12,10 +12,6 @@ namespace HightechAngular.Admin.Features.OrderManagement
         {
             await Task.Delay(1000);
             var result = input.Order.With((Order.Disputed newOrder) => newOrder.BecomeComplete());
-            if (result == null)
-            {
-                return FailureInfo.Invalid("Order is in invalid state");
-            }
 
             return result.EligibleStatus;
         }

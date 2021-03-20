@@ -1,7 +1,6 @@
 using Force.Cqrs;
 using HightechAngular.Orders.Entities;
 using Infrastructure.Cqrs;
-using Infrastructure.Workflow;
 using System.Threading.Tasks;
 
 namespace HightechAngular.Shop.Features.MyOrders
@@ -12,10 +11,6 @@ namespace HightechAngular.Shop.Features.MyOrders
         {
             await Task.Delay(1000);
             var result = input.Order.With((Order.Shipped newOrder) => newOrder.BecomeDisputed());
-            if (result == null)
-            {
-                return FailureInfo.Invalid("Order is in invalid state");
-            }
 
             return result.EligibleStatus;
         }

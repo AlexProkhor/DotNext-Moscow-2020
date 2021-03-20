@@ -11,11 +11,13 @@ namespace HightechAngular.Orders.Entities
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public partial class Order : OrderHasStateBase<OrderStatus, Order.OrderStateBase>
     {
+
         public static readonly OrderSpecs Specs = new OrderSpecs();
 
         protected Order()
         {
         }
+
         public Order(Cart cart)
         {
             User = cart.User ?? throw new InvalidOperationException("User must be authenticated");
@@ -23,6 +25,7 @@ namespace HightechAngular.Orders.Entities
                 .CartItems
                 .Select(x => new OrderItem(this, x))
                 .ToList();
+
             Total = _orderItems.Select(x => x.Price).Sum();
             Status = OrderStatus.New;
             this.EnsureInvariant();
@@ -32,6 +35,7 @@ namespace HightechAngular.Orders.Entities
         public virtual User User { get; protected set; } = default!;
         public DateTime Created { get; protected set; } = DateTime.UtcNow;
         public DateTime Updated { get; protected set; }
+
         private readonly List<OrderItem> _orderItems = new List<OrderItem>();
         public virtual IEnumerable<OrderItem> OrderItems => _orderItems;
         public double Total { get; protected set; }

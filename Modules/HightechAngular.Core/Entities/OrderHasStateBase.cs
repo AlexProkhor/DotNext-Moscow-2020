@@ -60,6 +60,11 @@ namespace HightechAngular.Orders.Entities
             Status = status;
             return (T)State;
         }
+        public TCurrentState As<TCurrentState>()
+            where TCurrentState : TState
+        {
+            return (TCurrentState)State;
+        }
 
         public static explicit operator TState(HasStateBase<TKey, TStatusEnum, TState> hasStatus)
         {

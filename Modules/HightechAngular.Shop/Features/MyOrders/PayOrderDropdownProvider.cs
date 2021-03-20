@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Infrastructure.SwaggerSchema.Dropdowns;
 using Infrastructure.SwaggerSchema.Dropdowns.Providers;
 
-namespace HightechAngular.Admin.Features.OrderManagement
+namespace HightechAngular.Shop.Features.MyOrders
 {
     public class PayOrderDropdownProvider : IDropdownProvider<PayOrder>
     {
