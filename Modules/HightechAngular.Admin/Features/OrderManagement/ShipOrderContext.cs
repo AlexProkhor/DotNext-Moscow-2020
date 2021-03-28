@@ -1,14 +1,10 @@
-﻿using HightechAngular.Orders.Entities;
-using HightechAngular.Shop.Features.MyOrders;
-using System.ComponentModel.DataAnnotations;
+﻿using HightechAngular.Core.Base;
+using HightechAngular.Orders.Entities;
 
 namespace HightechAngular.Admin.Features.OrderManagement
 {
-    public class ShipOrderContext : OrderStatusContextBase<ShipOrder>
+    public class ShipOrderContext : ChangeStateOrderContext<ShipOrder, Order.Paid>
     {
-        [Required]
-        public Order.Paid State => Order.As<Order.Paid>();
-
         public ShipOrderContext(ShipOrder request, Order order) : base(request, order)
         {
         }

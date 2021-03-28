@@ -11,8 +11,5 @@ namespace HightechAngular.Shop.Features.MyOrders
         public GetMyOrdersQueryHandler(IQueryable<Order> queryable) : base(queryable)
         {
         }
-        
-        protected override IQueryable<OrderListItem> Map(IQueryable<Order> queryable, GetMyOrders query) =>
-            queryable.Select(OrderListItem.Map);
     }
 }

@@ -1,9 +1,8 @@
-using HightechAngular.Orders.Base;
+using HightechAngular.Core.Base;
 
 namespace HightechAngular.Shop.Features.MyOrders
 {
     public class CompleteOrder : ChangeOrderStateBase
     {
-        public int OrderId { get; set; }
     }
 }

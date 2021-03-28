@@ -1,18 +1,23 @@
-using Force.Cqrs;
+using Force.Ccc;
+using HightechAngular.Core.Base;
+using HightechAngular.Orders.Base;
 using HightechAngular.Orders.Entities;
-using Infrastructure.Cqrs;
-using System.Threading.Tasks;
 
 namespace HightechAngular.Shop.Features.MyOrders
 {
-    public class DisputeOrderCommandHandler : ICommandHandler<DisputeOrderContext, Task<HandlerResult<OrderStatus>>>
+    public class DisputeOrderCommandHandler :
+        DomainHandlerBase<
+            DisputeOrder,
+            Order.Shipped,
+            Order.Disputed>
     {
-        public async Task<HandlerResult<OrderStatus>> Handle(DisputeOrderContext input)
+        public DisputeOrderCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            await Task.Delay(1000);
-            var result = input.State.BecomeDisputed();
+        }
 
-            return result.EligibleStatus;
+        protected override Order.Disputed ChangeStateOrder(ChangeStateOrderContext<DisputeOrder, Order.Shipped> input)
+        {
+            return input.State.BecomeDisputed();
         }
     }
 }

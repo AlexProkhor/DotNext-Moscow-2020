@@ -1,5 +1,5 @@
 ﻿using Force.Cqrs;
-using Force.Ddd;
+using HightechAngular.Core.Base;
 using HightechAngular.Orders.Entities;
 using Infrastructure.Cqrs;
 using Infrastructure.OperationContext;
@@ -10,8 +10,8 @@ namespace HightechAngular.Shop.Features.MyOrders
 {
     public class OrderStatusContextBase<T> :
         ByIntIdOperationContextBase<T>,
-        ICommand<Task<HandlerResult<OrderStatus>>>
-        where T : class, IHasId<int>
+        ICommand<Task<CommandResult<OrderStatus>>>
+        where T : ChangeOrderStateBase
     {
         [Required]
         public Order Order { get; }

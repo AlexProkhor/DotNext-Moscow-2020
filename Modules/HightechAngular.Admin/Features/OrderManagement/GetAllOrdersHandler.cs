@@ -12,8 +12,5 @@ namespace HightechAngular.Admin.Features.OrderManagement
         public GetAllOrdersHandler(IQueryable<Order> queryable) : base(queryable)
         {
         }
-
-        protected override IQueryable<OrderListItem> Map(IQueryable<Order> queryable, GetAllOrders query) =>
-            queryable.Select(OrderListItem.Map);
     }
 }
