@@ -1,4 +1,6 @@
 using HightechAngular.Admin.Features.OrderManagement;
+using HightechAngular.Orders.Entities;
+using HightechAngular.Orders.Services;
 using HightechAngular.Shop.Features.MyOrders;
 using Infrastructure.SwaggerSchema.Dropdowns.Providers;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +14,10 @@ namespace HightechAngular.Admin
             services.AddScoped<IDropdownProvider<PayOrder>, PayOrderDropdownProvider>();
             services.AddScoped<IDropdownProvider<OrderListItem>, OrderListItemDropdownProvider>();
             services.AddScoped<IDropdownProvider<AllOrdersItem>, CreateOrderDropdownProvider>();
+
+            services.AddStateOrder<PayMyOrderContext, PayOrder, Order.New, Order.Paid>();
+            services.AddStateOrder<ShipOrderContext, ShipOrder, Order.Paid, Order.Shipped>();
+            services.AddStateOrder<CompleteOrderAdminContext, CompleteOrderAdmin, Order.Disputed, Order.Complete>();
         }
     }
 }

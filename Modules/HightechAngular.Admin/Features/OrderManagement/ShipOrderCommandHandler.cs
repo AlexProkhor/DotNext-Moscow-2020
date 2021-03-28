@@ -1,19 +1,23 @@
-using Force.Cqrs;
+using Force.Ccc;
+using HightechAngular.Core.Base;
+using HightechAngular.Orders.Base;
 using HightechAngular.Orders.Entities;
-using Infrastructure.Cqrs;
-using System.Threading.Tasks;
 
 namespace HightechAngular.Admin.Features.OrderManagement
 {
     public class ShipOrderCommandHandler :
-        ICommandHandler<ShipOrderContext, Task<HandlerResult<OrderStatus>>>
+         DomainHandlerBase<
+             ShipOrder,
+             Order.Paid,
+             Order.Shipped>
     {
-        public async Task<HandlerResult<OrderStatus>> Handle(ShipOrderContext input)
+        public ShipOrderCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            await Task.Delay(1000);
-            var result = input.Order.With((Order.Paid newOrder) => newOrder.BecomeShipped());
-         
-            return result.EligibleStatus;
+        }
+
+        protected override Order.Shipped ChangeStateOrder(ChangeStateOrderContext<ShipOrder, Order.Paid> input)
+        {
+            return input.State.BecomeShipped();
         }
     }
 }

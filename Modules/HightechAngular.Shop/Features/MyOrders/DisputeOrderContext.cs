@@ -1,14 +1,12 @@
-﻿using HightechAngular.Orders.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using HightechAngular.Core.Base;
+using HightechAngular.Orders.Entities;
 
 namespace HightechAngular.Shop.Features.MyOrders
 {
-    public class DisputeOrderContext : OrderStatusContextBase<DisputeOrder>
+    public class DisputeOrderContext : ChangeStateOrderContext<DisputeOrder, Order.Shipped>
     {
-        [Required]
-        public Order.Disputed State => Order.As<Order.Disputed>();
         public DisputeOrderContext(DisputeOrder request, Order order) : base(request, order)
-    {
+        {
+        }
     }
-}
 }

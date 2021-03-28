@@ -51,6 +51,7 @@ namespace HightechAngular.Orders.Entities
             {
                 return func(state);
             }
+
             return ifFalse;
         }
 
@@ -60,10 +61,13 @@ namespace HightechAngular.Orders.Entities
             Status = status;
             return (T)State;
         }
+
         public TCurrentState As<TCurrentState>()
             where TCurrentState : TState
         {
-            return (TCurrentState)State;
+            return State is TCurrentState currentState
+                ? currentState
+                : default;
         }
 
         public static explicit operator TState(HasStateBase<TKey, TStatusEnum, TState> hasStatus)

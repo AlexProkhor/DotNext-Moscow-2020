@@ -1,4 +1,7 @@
-﻿using HightechAngular.Shop;
+﻿using HightechAngular.Admin.Features.OrderManagement;
+using HightechAngular.Orders.Entities;
+using HightechAngular.Shop;
+using HightechAngular.Shop.Features.MyOrders;
 using Infrastructure.SwaggerSchema;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;

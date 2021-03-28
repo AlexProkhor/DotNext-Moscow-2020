@@ -4,8 +4,8 @@ using Force.Ddd;
 using HightechAngular.Orders.Entities;
 using Infrastructure.Cqrs;
 
-namespace HightechAngular.Orders.Base
-{
+namespace HightechAngular.Core.Base
+{ 
     public abstract class ChangeOrderStateBase :
         HasIdBase,
         ICommand<Task<HandlerResult<OrderStatus>>>

@@ -1,10 +1,8 @@
-using HightechAngular.Orders.Base;
-using HightechAngular.Orders.Entities;
+using HightechAngular.Core.Base;
 
 namespace HightechAngular.Admin.Features.OrderManagement
 {
     public class ShipOrder : ChangeOrderStateBase
     {
-        public int OrderId { get; set; }
     }
 }

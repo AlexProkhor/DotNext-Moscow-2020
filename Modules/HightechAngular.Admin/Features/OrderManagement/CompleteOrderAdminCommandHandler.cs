@@ -1,19 +1,19 @@
-﻿using Force.Cqrs;
+﻿using Force.Ccc;
 using HightechAngular.Orders.Entities;
-using Infrastructure.Cqrs;
-using System.Threading.Tasks;
+using HightechAngular.Core.Base;
+using HightechAngular.Shop.Features.MyOrders;
 
 namespace HightechAngular.Admin.Features.OrderManagement
 {
-    public class CompleteOrderAdminCommnadHandler :
-          ICommandHandler<CompleteOrderAdminContext, Task<HandlerResult<OrderStatus>>>
+    public class CompleteOrderAdminCommandHandler : CompleteOrderCommandHandlerBase<CompleteOrderAdmin, Order.Disputed>
     {
-        public async Task<HandlerResult<OrderStatus>> Handle(CompleteOrderAdminContext input)
+        public CompleteOrderAdminCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            await Task.Delay(1000);
-            var result = input.Order.With((Order.Disputed newOrder) => newOrder.BecomeComplete());
+        }
 
-            return result.EligibleStatus;
+        protected override Order.Complete ChangeStateOrder(ChangeStateOrderContext<CompleteOrderAdmin, Order.Disputed> input)
+        {
+            return input.State.BecomeComplete();
         }
     }
 }

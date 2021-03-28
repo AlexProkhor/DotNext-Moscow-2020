@@ -10,7 +10,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="EFCore.BulkExtensions" Version="3.2.5" />
-        <PackageReference Include="Force" Version="2.0.0-alpha1" />
+        <PackageReference Include="Force" Version="2.0.0-alpha3" />
     </ItemGroup>
     <ItemGroup>
       <Compile Update="Features\OrderManagement\GetOrdersDropdownProvider.cs">
@@ -27,9 +27,6 @@
       </Compile>
       <Compile Update="Features\OrderManagement\CreateOrderDropdownProvider.cs">
         <DependentUpon>AllOrderController.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Features\OrderManagement\ShipOrderHandler.cs">
-        <DependentUpon>ShipOrder.cs</DependentUpon>
       </Compile>
       <Compile Update="Features\OrderManagement\ShipOrder.cs">
         <DependentUpon>AllOrderController.cs</DependentUpon>
