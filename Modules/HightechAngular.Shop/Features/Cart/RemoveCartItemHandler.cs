@@ -1,14 +1,12 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Force.Cqrs;
-using HightechAngular.Orders.Entities;
+﻿using Force.Cqrs;
 using HightechAngular.Orders.Services;
 using JetBrains.Annotations;
 
 namespace HightechAngular.Shop.Features.Cart
 {
     [UsedImplicitly]
-    public class RemoveCartItemHandler : ICommandHandler<RemoveCartItemContext, bool>
+    public class RemoveCartItemHandler :
+        ICommandHandler<RemoveCartItemContext, bool>
     {
         private readonly ICartStorage _cartStorage;
 

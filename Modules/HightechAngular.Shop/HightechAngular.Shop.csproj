@@ -32,9 +32,6 @@
       <Compile Update="Features\Cart\UpdateCart.cs">
         <DependentUpon>CartController.cs</DependentUpon>
       </Compile>
-      <Compile Update="Features\Cart\UpdateCartHandler.cs">
-        <DependentUpon>UpdateCart.cs</DependentUpon>
-      </Compile>
       <Compile Update="Features\Cart\RemoveCartItemHandler.cs">
         <DependentUpon>RemoveCartItem.cs</DependentUpon>
       </Compile>
@@ -130,6 +127,15 @@
       </Compile>
       <Compile Update="Features\MyOrders\DisputeOrderCommandHandler.cs">
         <DependentUpon>DisputeOrder.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Features\MyOrders\PayOrder.cs">
+        <DependentUpon>AllOrderController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Features\MyOrders\PayOrderCommandHandler.cs">
+        <DependentUpon>PayOrder.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Features\MyOrders\PayOrderDropdownProvider.cs">
+        <DependentUpon>PayOrder.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 </Project>

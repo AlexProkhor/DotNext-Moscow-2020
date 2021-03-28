@@ -1,23 +1,11 @@
-﻿using Force.Cqrs;
-using HightechAngular.Orders.Entities;
-using Infrastructure.OperationContext;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HightechAngular.Orders.Entities;
 
 namespace HightechAngular.Shop.Features.Cart
 {
-    public class AddProductCartContext :
-       ByIntIdOperationContextBase<AddProductCart>,
-       ICommand<int>
+    public class AddProductCartContext : UpdateProductInCartContextBase<AddProductCart, int>
     {
-        [Required]
-        public Product Product { get; }
-        public AddProductCartContext(AddProductCart request, Product product) : base(request)
+        public AddProductCartContext(AddProductCart request, Product product) : base(request, product)
         {
-            Product = product;
         }
     }
 }

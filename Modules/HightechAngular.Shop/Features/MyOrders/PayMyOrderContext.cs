@@ -1,22 +1,14 @@
-﻿using Force.Cqrs;
-using HightechAngular.Orders.Base;
-using HightechAngular.Orders.Entities;
-using Infrastructure.Cqrs;
-using Infrastructure.OperationContext;
+﻿using HightechAngular.Orders.Entities;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 
 namespace HightechAngular.Shop.Features.MyOrders
 {
-    public class PayMyOrderContext :
-           ByIntIdOperationContextBase<ChangeOrderStateBase>,
-           ICommand<Task<HandlerResult<OrderStatus>>>
+    public class PayMyOrderContext : OrderStatusContextBase<PayOrder>
     {
         [Required]
-        public Order Order { get; }
-        public PayMyOrderContext(ChangeOrderStateBase request, Order order) : base(request)
+        public Order.New State => Order.As<Order.New>();
+        public PayMyOrderContext(PayOrder request, Order order) : base(request, order)
         {
-            Order = order;
         }
     }
 }

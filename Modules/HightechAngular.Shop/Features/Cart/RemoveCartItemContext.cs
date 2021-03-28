@@ -5,14 +5,10 @@ using Infrastructure.OperationContext;
 
 namespace HightechAngular.Shop.Features.Cart
 {
-    public class RemoveCartItemContext : ByIntIdOperationContextBase<RemoveCartItem>, ICommand<bool>
+    public class RemoveCartItemContext : UpdateCartContext<RemoveCartItem, bool>
     {
-        [Required]
-        public Product Product { get; }
-        
-        public RemoveCartItemContext(RemoveCartItem request, Product product) : base(request)
-        {
-            Product = product;
-        }
+        public RemoveCartItemContext(RemoveCartItem request, Product product) : base(request, product)
+    {
     }
+}
 }
