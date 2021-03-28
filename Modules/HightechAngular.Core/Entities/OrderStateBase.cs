@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Ddd.Domain.State;
+using System;
 
 namespace HightechAngular.Orders.Entities
 {
@@ -67,6 +68,11 @@ namespace HightechAngular.Orders.Entities
             public Complete BecomeComplete()
             {
                 return Entity.To<Complete>(OrderStatus.Complete);
+            }
+
+            public Disputed BecomeDisputed()
+            {
+                return Entity.To<Disputed>(OrderStatus.Dispute);
             }
 
             public override OrderStatus EligibleStatus => OrderStatus.Dispute;
