@@ -10,7 +10,7 @@ namespace HightechAngular.Shop.Features.MyOrders
 {
     public class OrderStatusContextBase<T> :
         ByIntIdOperationContextBase<T>,
-        ICommand<Task<HandlerResult<OrderStatus>>>
+        ICommand<Task<CommandResult<OrderStatus>>>
         where T : ChangeOrderStateBase
     {
         [Required]

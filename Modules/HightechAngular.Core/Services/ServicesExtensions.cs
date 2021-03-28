@@ -17,7 +17,7 @@ namespace HightechAngular.Orders.Services
             where TTo : Order.OrderStateBase
         {
             services.AddScoped<
-                ICommandHandler<TContext, Task<HandlerResult<OrderStatus>>>,
+                ICommandHandler<TContext, Task<CommandResult<OrderStatus>>>,
                 ChangeOrderStateCommandHandler<TCommand, TFrom, TTo>>();
         }
     }

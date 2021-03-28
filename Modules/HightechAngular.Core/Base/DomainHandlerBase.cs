@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace HightechAngular.Orders.Base
 {
     public abstract class DomainHandlerBase<TCommand, TFrom, TTo> :
-           IHandler<ChangeStateOrderContext<TCommand, TFrom>, Task<HandlerResult<TTo>>>
+           IHandler<ChangeStateOrderContext<TCommand, TFrom>, Task<CommandResult<TTo>>>
            where TCommand : ChangeOrderStateBase
            where TFrom : Order.OrderStateBase
            where TTo : Order.OrderStateBase
@@ -22,7 +22,7 @@ namespace HightechAngular.Orders.Base
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<HandlerResult<TTo>> Handle(ChangeStateOrderContext<TCommand, TFrom> input)
+        public async Task<CommandResult<TTo>> Handle(ChangeStateOrderContext<TCommand, TFrom> input)
         {
             using var tr = _unitOfWork.BeginTransaction();
             try
