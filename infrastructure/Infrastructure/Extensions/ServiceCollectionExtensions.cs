@@ -8,6 +8,7 @@ using Force.Ddd.DomainEvents;
 using Force.Reflection;
 using Infrastructure.Ddd;
 using Infrastructure.OperationContext;
+using Infrastructure.Rabbit;
 using Infrastructure.Validation;
 using Infrastructure.Workflow;
 using JetBrains.Annotations;
@@ -251,7 +252,7 @@ namespace Infrastructure.Extensions
 
         private static void AddInfrastructure(IServiceCollection services)
         {
-            services.TryAddScoped<IHandler<IEnumerable<IDomainEvent>>, DomainEventDispatcher>();
+            services.TryAddScoped<IHandler<IEnumerable<IDomainEvent>>, RabbitDomainEventDispatcher>();
             services.TryAddScoped<IUnitOfWork, EfCoreUnitOfWork>();
             services.TryAddScoped(typeof(IWorkflow<,>), typeof(HandlerWorkflowFactory<,>));
             services.TryAddScoped(typeof(IAsyncWorkflow<,>), typeof(HandlerAsyncWorkflowFactory<,>));
