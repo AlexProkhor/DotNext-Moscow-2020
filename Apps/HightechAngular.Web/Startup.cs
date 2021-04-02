@@ -1,14 +1,11 @@
-using System.Text.Json.Serialization;
 using HightechAngular.Admin;
 using HightechAngular.Admin.Features.OrderManagement;
 using HightechAngular.Data;
 using HightechAngular.Identity.Entities;
 using HightechAngular.Identity.Services;
-using HightechAngular.Orders;
 using HightechAngular.Shop;
 using HightechAngular.Shop.Features.Catalog;
 using HightechAngular.Web.Filters;
-using Infrastructure;
 using Infrastructure.Extensions;
 using Infrastructure.SwaggerSchema.Dropdowns.Providers;
 using Infrastructure.SwaggerSchema.TypeProvider;
@@ -23,6 +20,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System.Text.Json.Serialization;
 
 namespace HightechAngular.Web
 {
@@ -71,7 +69,11 @@ namespace HightechAngular.Web
             services.RegisterAdmin();
             services.RegisterOrder();
 
-            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
+
             services.RegisterSwagger();
             services.AddHttpContextAccessor();
             services.AddSession(options =>

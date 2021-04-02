@@ -1,4 +1,5 @@
 using Force.Ccc;
+using Force.Ddd.DomainEvents;
 using Force.Extensions;
 using HightechAngular.Identity.Entities;
 using System;
@@ -9,11 +10,11 @@ using System.Linq;
 namespace HightechAngular.Orders.Entities
 {
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-    public partial class Order : OrderHasStateBase<OrderStatus, Order.OrderStateBase>
+    public partial class Order : OrderHasStateBase<OrderStatus, Order.OrderStateBase>, IHasDomainEvents
     {
 
         public static readonly OrderSpecs Specs = new OrderSpecs();
-
+        private readonly static DomainEventStore _domainEvents = new DomainEventStore();
         protected Order()
         {
         }
@@ -54,6 +55,15 @@ namespace HightechAngular.Orders.Entities
 
                 _ => throw new NotSupportedException($"Status \"{status}\" is not supported")
             };
+        }
+
+        public void RemoveDomainEvents()
+        {
+            _domainEvents._domainEvents.Clear();
+        }
+        public IEnumerable<IDomainEvent> GetDomainEvents()
+        {
+            return _domainEvents;
         }
     }
 }
